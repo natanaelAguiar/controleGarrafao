@@ -1,79 +1,92 @@
 package br.com.controleGarrafao.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.JoinColumn;;
+import javax.persistence.UniqueConstraint;
+
+
 
 @Entity
-@Table(name = "cliente")
-public class Cliente {
+@Table(name = "cliente", catalog="controleGarrafao", uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"CLIENTE_RUA", "CLIENTE_NUMERO", "CLIENTE_COMPLEMENTO"})
+})
+public class Cliente implements Serializable{
+
+	private Integer clienteId;
+	private String clienteNome;
+	private String clienteRua;
+	private int clienteNumero;
+	private String clienteComplemento;
+	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>(0);
+	
+	public Cliente(){}
+
 	@Id
-	@TableGenerator(name="TABLE_GEN_CLIENTE", table="SEQUENCE_TABLE", pkColumnName="SEQ_NAME",
-    valueColumnName="SEQ_COUNT", pkColumnValue="EMP_SEQ")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id",nullable=false)
-	private Long id;
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "CLIENTE_ID", unique = true, nullable = false)
+	public Integer getClienteId() {
+		return clienteId;
+	}
 
-	@Column(name = "nome")
-	private String nome;
+	public void setClienteId(Integer clienteId) {
+		this.clienteId = clienteId;
+	}
+
+	@Column(name = "CLIENTE_NOME", nullable = false)
+	public String getClienteNome() {
+		return clienteNome;
+	}
+
+	public void setClienteNome(String clienteNome) {
+		this.clienteNome = clienteNome;
+	}
+
+	@Column(name = "CLIENTE_RUA", nullable = false)
+	public String getClienteRua() {
+		return clienteRua;
+	}
+
+	public void setClienteRua(String clienteRua) {
+		this.clienteRua = clienteRua;
+	}
+
+	@Column(name = "CLIENTE_NUMERO", nullable = false)
+	public int getClienteNumero() {
+		return clienteNumero;
+	}
+
+	public void setClienteNumero(int clienteNumero) {
+		this.clienteNumero = clienteNumero;
+	}
+
+	@Column(name = "CLIENTE_COMPLEMENTO")
+	public String getClienteComplemento() {
+		return clienteComplemento;
+	}
+
+	public void setClienteComplemento(String clienteComplemento) {
+		this.clienteComplemento = clienteComplemento;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.cliente", cascade = CascadeType.ALL )
+	public Set<ClienteGarrafao> getClienteGarrafaos() {
+		return clienteGarrafaos;
+	}
+
+	public void setClienteGarrafaos(Set<ClienteGarrafao> clienteGarrafaos) {
+		this.clienteGarrafaos = clienteGarrafaos;
+	}
 	
-	@Column(name = "rua")
-	private String rua;
 	
-	@Column(name = "numero")
-	private int numero;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinTable(name="cliente_garrafao",  
-    joinColumns={@JoinColumn(name="cliente_id", referencedColumnName="id")},  
-    inverseJoinColumns={@JoinColumn(name="garrafao_id", referencedColumnName="id")})
-	private List<Garrafao> garrafao = new ArrayList<Garrafao>();
-
-	public Long getId() {
-		return id;
-	}
-
-	public List<Garrafao> getGarrafao() {
-		return garrafao;
-	}
-
-	public void setGarrafao(List<Garrafao> garrafao) {
-		this.garrafao = garrafao;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getRua() {
-		return rua;
-	}
-
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
-
-	public int getNumero() {
-		return numero;
-	}
-
-	public void setNumero(int numero) {
-		this.numero = numero;
-	}
 }

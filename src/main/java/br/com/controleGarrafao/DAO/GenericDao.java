@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.validation.Valid;
 
 public abstract class GenericDao<T, I extends Serializable> {
@@ -63,11 +65,12 @@ public abstract class GenericDao<T, I extends Serializable> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(){
+	public List<T> findAll(Class clazz){
+		this.entityManager = getEm();
 		EntityTransaction transaction = this.entityManager.getTransaction();
 		try {
 			transaction.begin();
-			return this.entityManager.createQuery("FROM"+ this.persistedClass.getName()).getResultList();
+			return this.entityManager.createQuery("FROM "+ clazz.getName()).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			transaction.rollback();

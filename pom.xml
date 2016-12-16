@@ -36,39 +36,21 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.4.1</version>
-		</dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.1.0.Final</version>
+</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.11.Final</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.2.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.3.11.Final</version>
+			<version>5.1.0.Final</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.21</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.0.Final</version>
 		</dependency>
 
 		<dependency>
@@ -94,17 +76,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.38</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.logging</groupId>
-			<artifactId>jboss-logging</artifactId>
-			<version>3.3.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.spec.javax.transaction</groupId>
-			<artifactId>jboss-transaction-api_1.1_spec</artifactId>
-			<version>1.0.1.Final</version>
-		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -112,10 +83,18 @@
 			<version>1.1.0.Final</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.jboss.javaee/jboss-transaction-api -->
+		<dependency>
+			<groupId>org.jboss.javaee</groupId>
+			<artifactId>jboss-transaction-api</artifactId>
+			<version>1.0.1.GA</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<finalName>controleGarrafao</finalName>
-		
+
 	</build>
 	<properties>
 		<spring.version>4.2.1.RELEASE</spring.version>
