@@ -15,31 +15,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-
-
 @Entity
-@Table(name = "cliente", catalog="controleGarrafao", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"CLIENTE_RUA", "CLIENTE_NUMERO", "CLIENTE_COMPLEMENTO"})
-})
-public class Cliente implements Serializable{
+@Table(name = "CLIENTES")
+public class Cliente implements Serializable {
 
-	private Integer clienteId;
+	private long clienteId;
 	private String clienteNome;
 	private String clienteRua;
 	private int clienteNumero;
 	private String clienteComplemento;
-	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>(0);
 	
-	public Cliente(){}
+	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
 
+	public Cliente() {
+	}
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "CLIENTE_ID", unique = true, nullable = false)
-	public Integer getClienteId() {
+	public long getClienteId() {
 		return clienteId;
 	}
 
-	public void setClienteId(Integer clienteId) {
+	public void setClienteId(long clienteId) {
 		this.clienteId = clienteId;
 	}
 
@@ -78,15 +76,17 @@ public class Cliente implements Serializable{
 	public void setClienteComplemento(String clienteComplemento) {
 		this.clienteComplemento = clienteComplemento;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.cliente", cascade = CascadeType.ALL )
-	public Set<ClienteGarrafao> getClienteGarrafaos() {
+	
+	@OneToMany(mappedBy = "cliente")
+	public Set<ClienteGarrafao> getClienteGarrafao() {
 		return clienteGarrafaos;
 	}
 
-	public void setClienteGarrafaos(Set<ClienteGarrafao> clienteGarrafaos) {
-		this.clienteGarrafaos = clienteGarrafaos;
+	public void setClienteGarrafao(Set<ClienteGarrafao> clienteGarrafao) {
+		this.clienteGarrafaos = clienteGarrafao;
 	}
 	
-	
+	public void addClienteGarrafao(ClienteGarrafao clienteGarrafao) {
+		this.clienteGarrafaos.add(clienteGarrafao);
+	}
 }

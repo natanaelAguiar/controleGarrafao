@@ -14,14 +14,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "garrafao", catalog = "controleGarrafao")
-public class Garrafao{
+@Table(name = "GARRAFAOS")
+public class Garrafao {
 
 	private Integer garrafaoId;
 	private String garrafaoNome;
-	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>(0);
+	
+	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
 
-	public Garrafao() {}
+	public Garrafao() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -42,8 +44,8 @@ public class Garrafao{
 	public void setGarrafaoNome(String garrafaoNome) {
 		this.garrafaoNome = garrafaoNome;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.garrafao")
+	
+	@OneToMany(mappedBy = "garrafao")
 	public Set<ClienteGarrafao> getClienteGarrafaos() {
 		return clienteGarrafaos;
 	}
@@ -52,7 +54,8 @@ public class Garrafao{
 		this.clienteGarrafaos = clienteGarrafaos;
 	}
 	
-	
-	
-	
+	public void addClienteGarrafao(ClienteGarrafao clienteGarrafao){
+		this.clienteGarrafaos.add(clienteGarrafao);
+	}
+
 }
