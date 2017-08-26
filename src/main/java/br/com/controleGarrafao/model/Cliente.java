@@ -1,7 +1,8 @@
 package br.com.controleGarrafao.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "CLIENTES")
-public class Cliente implements Serializable {
+public class Cliente{
 
 	private long clienteId;
 	private String clienteNome;
@@ -26,7 +27,7 @@ public class Cliente implements Serializable {
 	private String clienteComplemento;
 	
 	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
-
+	
 	public Cliente() {
 	}
 	
@@ -77,13 +78,13 @@ public class Cliente implements Serializable {
 		this.clienteComplemento = clienteComplemento;
 	}
 	
-	@OneToMany(mappedBy = "cliente")
-	public Set<ClienteGarrafao> getClienteGarrafao() {
+	@OneToMany(mappedBy = "cliente",fetch = FetchType.EAGER)
+	public Set<ClienteGarrafao> getClienteGarrafaos() {
 		return clienteGarrafaos;
 	}
 
-	public void setClienteGarrafao(Set<ClienteGarrafao> clienteGarrafao) {
-		this.clienteGarrafaos = clienteGarrafao;
+	public void setClienteGarrafaos(Set<ClienteGarrafao> clienteGarrafaos) {
+		this.clienteGarrafaos = clienteGarrafaos;
 	}
 	
 	public void addClienteGarrafao(ClienteGarrafao clienteGarrafao) {

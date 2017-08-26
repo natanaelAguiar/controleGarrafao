@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name = "CLIENTES_GARRAFAOS")
+@Table(name = "CLIENTESGARRAFAOS")
 public class ClienteGarrafao{
 	private long id;
 	private Cliente cliente;

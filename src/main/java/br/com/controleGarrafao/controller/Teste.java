@@ -2,8 +2,10 @@ package br.com.controleGarrafao.controller;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -30,8 +32,9 @@ public class Teste {
 		manager.getTransaction().begin();    
 		ControleGarrafaoDAO controleGarrafaoDAO = new ControleGarrafaoDAO();
 		GarrafaoControle garrafaoControle = new GarrafaoControle();
-		ClienteGarrafao clienteGarrafao = new ClienteGarrafao();
-		List<ClienteGarrafao> list = new ArrayList<ClienteGarrafao>();
+		Cliente cliente = new Cliente();
+		List<Cliente> list = new ArrayList<Cliente>();
+		Set<ClienteGarrafao> sClienteGarrafaos = new HashSet<ClienteGarrafao>();
 //		Cliente cliente = new Cliente();
 //		cliente.setClienteNome("Teste");
 //		cliente.setClienteRua("Nestor Barbosa");
@@ -43,14 +46,20 @@ public class Teste {
 //		clienteGarrafao.setCliente(cliente);
 //		clienteGarrafao.setGarrafao(garrafao);
 //		manager.persist(clienteGarrafao);
-		Query query = manager.createQuery("SELECT clientes_garrafaos INNER JOIN clientes on clientes.cliente_id = clientes_garrafaos.cliente_id"+ 
-"JOIN FETCH garrafaos on garrafaos.garrafao_id = clientes_garrafaos.garrafao_id ");
+		Query query = manager.createQuery("SELECT c FROM Cliente c INNER JOIN c.clienteGarrafaos cb ON (c.clienteId = cb.cliente) "
+				+ "INNER JOIN Garrafao g ON (g.garrafaoId = cb.garrafao)");
 		list = query.getResultList();
 		manager.getTransaction().commit();
 		manager.close();
-		clienteGarrafao = list.get(0);
-		System.out.println(clienteGarrafao.getCliente().getClienteNome());
-		System.out.println(clienteGarrafao.getGarrafao().getGarrafaoNome());
+		cliente = list.get(0);
+		sClienteGarrafaos = cliente.getClienteGarrafaos();
+		System.out.println(cliente.getClienteId());
+		
+		for (ClienteGarrafao clienteGarrafao : sClienteGarrafaos){
+			
+			System.out.println(clienteGarrafao.getGarrafao().getGarrafaoNome());
+		}
+//		System.out.println(clienteGarrafao.getGarrafao().getGarrafaoNome());
 		
 		
 		

@@ -6,7 +6,6 @@ CREATE TABLE `clientes`(
   `cliente_complemento` varchar(45),
   PRIMARY KEY (`cliente_id`)
 );
-
 CREATE TABLE `garrafaos`(
   `garrafao_id` int(11) NOT NULL AUTO_INCREMENT,
   `garrafao_nome` varchar(45) NOT NULL,
@@ -23,4 +22,4 @@ CREATE TABLE `clientes_garrafaos` (
   KEY `fk_group` (`garrafao_id`),
   CONSTRAINT `fk_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`),
   CONSTRAINT `fk_garrafao` FOREIGN KEY (`garrafao_id`) REFERENCES `garrafaos` (`garrafao_id`)
-)
+);
