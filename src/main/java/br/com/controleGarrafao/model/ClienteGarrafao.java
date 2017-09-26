@@ -1,21 +1,18 @@
 package br.com.controleGarrafao.model;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
 
 
 @Entity
-@Table(name = "CLIENTESGARRAFAOS")
+@Table(name = "CLIENTES_GARRAFAOS")
 public class ClienteGarrafao{
 	private long id;
 	private Cliente cliente;

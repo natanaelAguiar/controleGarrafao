@@ -16,8 +16,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "CLIENTES")
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "clienteId")
 public class Cliente{
 
 	private long clienteId;
@@ -26,7 +34,8 @@ public class Cliente{
 	private int clienteNumero;
 	private String clienteComplemento;
 	
-	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
+	@JsonManagedReference
+	private List<ClienteGarrafao> clienteGarrafaos = new ArrayList<ClienteGarrafao>();
 	
 	public Cliente() {
 	}
@@ -79,11 +88,11 @@ public class Cliente{
 	}
 	
 	@OneToMany(mappedBy = "cliente",fetch = FetchType.EAGER)
-	public Set<ClienteGarrafao> getClienteGarrafaos() {
+	public List<ClienteGarrafao> getClienteGarrafaos() {
 		return clienteGarrafaos;
 	}
 
-	public void setClienteGarrafaos(Set<ClienteGarrafao> clienteGarrafaos) {
+	public void setClienteGarrafaos(List<ClienteGarrafao> clienteGarrafaos) {
 		this.clienteGarrafaos = clienteGarrafaos;
 	}
 	
