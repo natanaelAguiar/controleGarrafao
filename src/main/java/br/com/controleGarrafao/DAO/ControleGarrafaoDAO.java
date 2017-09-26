@@ -1,64 +1,33 @@
 package br.com.controleGarrafao.DAO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import br.com.controleGarrafao.model.*;
+import javax.persistence.Query;
+import static br.com.controleGarrafao.util.JpaUtil.getEntityManager;
+import static br.com.controleGarrafao.util.JpaUtil.closeEntityManager;
 
-public class ControleGarrafaoDAO extends GenericDao<Cliente, Long> {
+import br.com.controleGarrafao.model.Cliente;
+import br.com.controleGarrafao.model.ClienteGarrafao;
+
+public class ControleGarrafaoDAO {
 	
-	public ControleGarrafaoDAO(){
-		super(Cliente.class);
+	
+	public List<Cliente> findAllClientes(){
+		EntityManager manager = getEntityManager();
+//		Query query = manager.createQuery("SELECT c FROM Cliente c INNER JOIN c.clienteGarrafaos cb ON (c.clienteId = cb.cliente) "
+//				+ "INNER JOIN Garrafao g ON (g.garrafaoId = cb.garrafao)");
+//		closeEntityManager();
+//		return (List<Cliente>) query.getResultList();
+		return (List<Cliente>) manager.createQuery("FROM " + Cliente.class.getName()).getResultList();
 	}
-
-//	private EntityManagerFactory factory;
-//
-//	public EntityManager getEm() {
-//		this.factory = Persistence.createEntityManagerFactory("controleGarrafao");
-//		return factory.createEntityManager();
-//	}
-//
-//	public Garrafao saveOrUpdate(Garrafao contato) {
-//		EntityManager entityManager = this.getEm();
-//		try {
-//			entityManager.getTransaction().begin();
-//			contato = entityManager.merge(contato);
-//			entityManager.getTransaction().commit();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			entityManager.getTransaction().rollback();
-//		} finally {
-//			entityManager.close();
-//		}
-//		return contato;
-//	}
-//	
-//	public Cliente saveOrUpdate2(Cliente contato) {
-//		EntityManager entityManager = this.getEm();
-//		try {
-//			entityManager.getTransaction().begin();
-//			contato = entityManager.merge(contato);
-//			entityManager.getTransaction().commit();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			entityManager.getTransaction().rollback();
-//		} finally {
-//			entityManager.close();
-//		}
-//		return contato;
-//	}
-//	
-//	public Cliente findById(Long id) {
-//		EntityManager entityManager = this.getEm();
-//		Cliente contato;
-//		try {
-//			contato = entityManager.find(Cliente.class, id);
-//		} finally {
-//			entityManager.close();
-//		}
-//		return contato;
-//	}
-
+	
+	public List<ClienteGarrafao> findAllClienteGarrafao() {
+		EntityManager manager = getEntityManager();
+		Query query = manager.createQuery("SELECT cg FROM ClienteGarrafao cg INNER JOIN cg.cliente c ON (c.clienteId = cg.cliente) "
+				+ "INNER JOIN Garrafao g ON (g.garrafaoId = cg.garrafao)");
+		return (List<ClienteGarrafao>) query.getResultList();
+	}
+		
 }

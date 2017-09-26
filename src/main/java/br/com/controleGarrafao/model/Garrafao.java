@@ -1,6 +1,8 @@
 package br.com.controleGarrafao.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,14 +15,22 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "GARRAFAOS")
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "garrafaoId")
 public class Garrafao {
 
-	private Integer garrafaoId;
+	private long garrafaoId;
 	private String garrafaoNome;
-	
-	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
+	@JsonBackReference
+	private List<ClienteGarrafao> clienteGarrafaos = new ArrayList<ClienteGarrafao>();
 
 	public Garrafao() {
 	}
@@ -28,11 +38,11 @@ public class Garrafao {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "GARRAFAO_ID", unique = true, nullable = false)
-	public Integer getGarrafaoId() {
+	public long getGarrafaoId() {
 		return garrafaoId;
 	}
 
-	public void setGarrafaoId(Integer garrafaoId) {
+	public void setGarrafaoId(long garrafaoId) {
 		this.garrafaoId = garrafaoId;
 	}
 
@@ -45,12 +55,12 @@ public class Garrafao {
 		this.garrafaoNome = garrafaoNome;
 	}
 	
-	@OneToMany(mappedBy = "garrafao")
-	public Set<ClienteGarrafao> getClienteGarrafaos() {
+	@OneToMany(mappedBy = "garrafao", fetch = FetchType.EAGER)
+	public List<ClienteGarrafao> getClienteGarrafaos() {
 		return clienteGarrafaos;
 	}
 
-	public void setClienteGarrafaos(Set<ClienteGarrafao> clienteGarrafaos) {
+	public void setClienteGarrafaos(List<ClienteGarrafao> clienteGarrafaos) {
 		this.clienteGarrafaos = clienteGarrafaos;
 	}
 	

@@ -1,7 +1,8 @@
 package br.com.controleGarrafao.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,9 +16,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "CLIENTES")
-public class Cliente implements Serializable {
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "clienteId")
+public class Cliente{
 
 	private long clienteId;
 	private String clienteNome;
@@ -25,8 +34,9 @@ public class Cliente implements Serializable {
 	private int clienteNumero;
 	private String clienteComplemento;
 	
-	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
-
+	@JsonManagedReference
+	private List<ClienteGarrafao> clienteGarrafaos = new ArrayList<ClienteGarrafao>();
+	
 	public Cliente() {
 	}
 	
@@ -77,13 +87,13 @@ public class Cliente implements Serializable {
 		this.clienteComplemento = clienteComplemento;
 	}
 	
-	@OneToMany(mappedBy = "cliente")
-	public Set<ClienteGarrafao> getClienteGarrafao() {
+	@OneToMany(mappedBy = "cliente",fetch = FetchType.EAGER)
+	public List<ClienteGarrafao> getClienteGarrafaos() {
 		return clienteGarrafaos;
 	}
 
-	public void setClienteGarrafao(Set<ClienteGarrafao> clienteGarrafao) {
-		this.clienteGarrafaos = clienteGarrafao;
+	public void setClienteGarrafaos(List<ClienteGarrafao> clienteGarrafaos) {
+		this.clienteGarrafaos = clienteGarrafaos;
 	}
 	
 	public void addClienteGarrafao(ClienteGarrafao clienteGarrafao) {
