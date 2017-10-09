@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="br.com.sasoriengine.model.Cliente" table="cliente" catalog="controleGarrafao">
+        <id name="clienteID" type="java.lang.Integer">
+            <column name="CLIENTE_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="clienteNome" type="string">
+            <column name="CLIENTE_NOME" length="50" not-null="true" unique="false" />
+        </property>
+        <property name="clienteRua" type="string">
+            <column name="CLIENTE_RUA" length="50" not-null="true" unique="false" />
+        </property>
+        <property name="clienteNumero" type="java.lang.Integer">
+            <column name="CLIENTE_NUMERO" not-null="true" unique="false" />
+        </property>
+        <property name="clienteComplemento" type="string">
+            <column name="CLIENTE_COMPLEMENTO" not-null="false" unique="false" />
+        </property>
+        <set name="clienteGarrafaos" table="cliente_garrafao" inverse="true" 
+        	lazy="true" fetch="select" cascade="persist,refresh,merge"  >
+            <key>
+                <column name="cliente" not-null="true" />
+            </key>
+            <one-to-many class="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao" />
+        </set>
+    </class>
+</hibernate-mapping>

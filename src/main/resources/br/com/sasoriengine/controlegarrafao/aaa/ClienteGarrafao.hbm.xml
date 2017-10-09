@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao" table="cliente_garrafao">
+		
+		<composite-id name="pk" class="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafaoId" >
+			
+			<key-property name="cliente" column="cliente" />
+			<key-property name="garrafao" column="garrafao" />
+
+		</composite-id>
+ 
+		<component name="cliente">
+		
+			<many-to-one name="clienteId" class="br.com.sasoriengine.controlegarrafao.model.Cliente"
+				update="false" insert="false">
+				<column name="CLIENTE_ID" not-null="true" />
+			</many-to-one>
+
+		</component>
+		
+		<component name="garrafao">
+		
+			<many-to-one name="garrafaoId" class="br.com.sasoriengine.controlegarrafao.model.Garrafao"
+				update="false" insert="false">
+				<column name="GARRAFAO_ID" not-null="true" />
+			</many-to-one>
+
+		</component>
+		
+	<!-- 	<many-to-one name="stock" class="com.mkyong.stock.Stock"
+				update="false" insert="false">
+				<column name="STOCK_ID" not-null="true" />
+			</many-to-one>
+
+			<many-to-one name="category" class="com.mkyong.stock.Category"
+				update="false" insert="false">
+				<column name="CATEGORY_ID" not-null="true" />
+			</many-to-one>
+ -->
+
+		<property name="quantidade" type="java.lang.Integer">
+			<column name="QUANTIDADE" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

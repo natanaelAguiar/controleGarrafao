@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="br.com.sasoriengine.model.Garrafao" table="garrafao" catalog="controleGarrafao">
+        <id name="clienteID" type="java.lang.Integer">
+            <column name="GARRAFAO_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="garrafaoNome" type="string">
+            <column name="GARRAFAO_NOME" length="50" not-null="true" unique="false" />
+        </property>
+        <set name="clienteGarrafaos" table="cliente_garrafao" inverse="true" 
+        	lazy="true" fetch="select" cascade="persist,refresh,merge"  >
+            <key>
+                <column name="pk.garrafao" not-null="true" />
+            </key>
+            <one-to-many class="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao" />
+        </set>
+    </class>
+</hibernate-mapping>
