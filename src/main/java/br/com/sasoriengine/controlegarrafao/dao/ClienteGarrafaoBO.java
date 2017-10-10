@@ -2,14 +2,14 @@ package br.com.sasoriengine.controlegarrafao.dao;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
-public interface ClienteGarrafaoDAO {
-
+public interface ClienteGarrafaoBO {
 	public List<ClienteDTO> findAllCliente();
 	public List<GarrafaoDTO> findAllGarrafao();
-	public ClienteDTO findClienteById(Long id);
-	public GarrafaoDTO findGarrafaoById(Long id);
+	public ResponseEntity<ClienteDTO> findClienteById(Long id);
+	public ResponseEntity<GarrafaoDTO> findGarrafaoById(Long id);
 }
