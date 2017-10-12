@@ -2,6 +2,8 @@ package br.com.sasoriengine.controlegarrafao.dao;
 
 import java.util.List;
 
+import javax.validation.ValidationException;
+
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +54,20 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			return new ResponseEntity<GarrafaoDTO>(garrafaoDTO, HttpStatus.OK);
 		} else
 			return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
+	}
+
+	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(Cliente cliente) {
+		ClienteDTO clienteDTO = new ClienteDTO();
+		try {
+			if(cliente.getClienteNome() != null && cliente.getClienteGarrafaos().size() > 0 && cliente.getClienteNumero() > 0
+					&& cliente.getClienteRua() != null) {
+				clienteDTO = clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
+			return new ResponseEntity<ClienteDTO>(clienteDTO, HttpStatus.OK);
+			}else new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+			
+		} catch (ValidationException e) {			
+			return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<ClienteDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }

@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBOImp;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAO;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
+import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
@@ -41,5 +43,9 @@ public class controleGarrafaoController {
 	@RequestMapping(value = "/findGarrafaoById/{id}", headers="Accept=application/json", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<GarrafaoDTO> findGarrafaoById(@PathVariable(value = "id") Long id){
 		return clienteGarrafaoBO.findGarrafaoById(id);
+	}
+	@RequestMapping(value = "/saveOrUpdateCliente", headers="Accept=application/json", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(@RequestBody Cliente cliente){
+		return clienteGarrafaoBO.saveOrUpdateCliente(cliente);
 	}
 }
