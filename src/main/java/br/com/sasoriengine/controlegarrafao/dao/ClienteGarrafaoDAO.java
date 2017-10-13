@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
+import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
 public interface ClienteGarrafaoDAO {
@@ -13,5 +14,5 @@ public interface ClienteGarrafaoDAO {
 	public ClienteDTO findClienteById(Long id);
 	public GarrafaoDTO findGarrafaoById(Long id);
 	public ClienteDTO saveOrUpdateCliente(Cliente cliente);
-	public GarrafaoDTO saveOrUpdateGarrafao(GarrafaoDTO garrafaoDTO);
+	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao);
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import br.com.sasoriengine.controlegarrafao.exeption.ClienteNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
+import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
 public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
@@ -69,5 +70,19 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<ClienteDTO>(HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(Garrafao garrafao) {
+		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
+		try {
+			if(garrafao.getGarrafaoNome() != null) {
+				garrafaoDTO = clienteGarrafaoDAO.saveOrUpdateGarrafao(garrafao);
+			return new ResponseEntity<GarrafaoDTO>(garrafaoDTO, HttpStatus.OK);
+			}else new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+			
+		} catch (ValidationException e) {			
+			return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<GarrafaoDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }

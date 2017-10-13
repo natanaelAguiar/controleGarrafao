@@ -32,12 +32,12 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		cList = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
 
 		for (Cliente cliente : cList) {
-			
+
 			ClienteDTO clienteDTO = new ClienteDTO();
 			clienteDTO = mapperCLiente(clienteDTO, cliente);
 			clientes.add(clienteDTO);
 		}
-		
+
 		session.close();
 		return clientes;
 	}
@@ -76,7 +76,7 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		return clienteDTO;
 	}
 
-	public GarrafaoDTO findGarrafaoById(Long id) throws ObjectNotFoundException{
+	public GarrafaoDTO findGarrafaoById(Long id) throws ObjectNotFoundException {
 		this.session = HibernateUtil.getSessionFactory().openSession();
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		Garrafao garrafao = new Garrafao();
@@ -84,33 +84,46 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		garrafao = session.load(Garrafao.class, id.intValue());
 
 		garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
-		
+
 		this.session.close();
 		return garrafaoDTO;
 
 	}
 
-	public ClienteDTO saveOrUpdateCliente(Cliente cliente) throws ValidationException{
+	public ClienteDTO saveOrUpdateCliente(Cliente cliente) throws ValidationException {
 		this.session = HibernateUtil.getSessionFactory().openSession();
-		
+
 		ClienteDTO clienteDTO = new ClienteDTO();
-		if(cliente.getClienteId() > 0) {			
+		if (cliente.getClienteId() > 0) {
 			this.session.persist(cliente);
 			this.session.flush();
 			this.session.getTransaction().commit();
-		}else {
+		} else {
 			clienteDTO = (ClienteDTO) this.session.merge(cliente);
 		}
-		
+
 		clienteDTO = mapperCLiente(clienteDTO, cliente);
-		
+
 		this.session.close();
 		return clienteDTO;
 	}
 
-	public GarrafaoDTO saveOrUpdateGarrafao(GarrafaoDTO garrafaoDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao) {
+		this.session = HibernateUtil.getSessionFactory().openSession();
+
+		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
+		if (garrafao.getGarrafaoId() > 0) {
+			this.session.persist(garrafao);
+			this.session.flush();
+			this.session.getTransaction().commit();
+		} else {
+			garrafaoDTO = (GarrafaoDTO) this.session.merge(garrafao);
+		}
+
+		garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
+
+		this.session.close();
+		return garrafaoDTO;
 	}
 
 }

@@ -17,6 +17,7 @@ import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAO;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
+import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
 @CrossOrigin("*")
@@ -44,8 +45,14 @@ public class controleGarrafaoController {
 	public ResponseEntity<GarrafaoDTO> findGarrafaoById(@PathVariable(value = "id") Long id){
 		return clienteGarrafaoBO.findGarrafaoById(id);
 	}
+	
 	@RequestMapping(value = "/saveOrUpdateCliente", headers="Accept=application/json", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(@RequestBody Cliente cliente){
 		return clienteGarrafaoBO.saveOrUpdateCliente(cliente);
+	}
+	
+	@RequestMapping(value = "/saveOrUpdateGarrafao", headers="Accept=application/json", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(@RequestBody Garrafao garrafao){
+		return clienteGarrafaoBO.saveOrUpdateGarrafao(garrafao);
 	}
 }
