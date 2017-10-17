@@ -10,10 +10,11 @@ import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
 public interface ClienteGarrafaoBO {
-	public List<ClienteDTO> findAllCliente();
-	public List<GarrafaoDTO> findAllGarrafao();
+	public ResponseEntity<List<ClienteDTO>> findAllCliente();
+	public ResponseEntity<List<GarrafaoDTO>> findAllGarrafao();
 	public ResponseEntity<ClienteDTO> findClienteById(Long id);
 	public ResponseEntity<GarrafaoDTO> findGarrafaoById(Long id);
 	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(Cliente cliente);
 	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(Garrafao garrafao);
+	public ResponseEntity<ClienteDTO> deleteCliente(long id);
 }

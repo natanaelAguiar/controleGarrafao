@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 		  generator = ObjectIdGenerators.PropertyGenerator.class, 
 		  property = "clienteId")
 public class Cliente{
-	private Integer clienteId;
+	private long clienteId;
 	private String clienteNome;
 	private String clienteRua;
 	private int clienteNumero;
@@ -38,10 +38,10 @@ public class Cliente{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CLIENTE_ID", unique = true, nullable = false)
-	public Integer getClienteId() {
+	public long getClienteId() {
 		return clienteId;
 	}
-	public void setClienteId(Integer clienteId) {
+	public void setClienteId(long clienteId) {
 		this.clienteId = clienteId;
 	}
 	

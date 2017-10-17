@@ -26,17 +26,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 		  property = "garrafaoId")
 public class Garrafao{
 
-	private Integer garrafaoId;
+	private long garrafaoId;
 	private String garrafaoNome;
 	private Set<ClienteGarrafao> clienteGarrafaos = new HashSet<ClienteGarrafao>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "GARRAFAO_ID", unique=true,nullable = false)
-	public Integer getGarrafaoId() {
+	public long getGarrafaoId() {
 		return garrafaoId;
 	}
-	public void setGarrafaoId(Integer garrafaoId) {
+	public void setGarrafaoId(long garrafaoId) {
 		this.garrafaoId = garrafaoId;
 	}
 	

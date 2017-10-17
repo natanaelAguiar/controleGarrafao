@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
@@ -27,12 +28,12 @@ public class controleGarrafaoController {
 	ClienteGarrafaoBO clienteGarrafaoBO = new ClienteGarrafaoBOImp(new ClienteGarrafaoDAOImp());
 	
 	@RequestMapping(value = "/findAllCliente", headers="Accept=application/json", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE })
-	public List<ClienteDTO> findAllCliente(){
+	public ResponseEntity<List<ClienteDTO>> findAllCliente(){
 		return clienteGarrafaoBO.findAllCliente();
 	}
 	
 	@RequestMapping(value = "/findAllGarrafao", headers="Accept=application/json", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE })
-	public List<GarrafaoDTO> findAllGarrafao(){
+	public ResponseEntity<List<GarrafaoDTO>> findAllGarrafao(){
 		return clienteGarrafaoBO.findAllGarrafao();
 	}
 	
@@ -54,5 +55,9 @@ public class controleGarrafaoController {
 	@RequestMapping(value = "/saveOrUpdateGarrafao", headers="Accept=application/json", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(@RequestBody Garrafao garrafao){
 		return clienteGarrafaoBO.saveOrUpdateGarrafao(garrafao);
+	}
+	@RequestMapping(value = "/deleteCliente/{id}", headers="Accept=application/json", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<ClienteDTO> deleteCliente(@PathVariable(value = "id") Long id){
+		return clienteGarrafaoBO.deleteCliente(id);
 	}
 }

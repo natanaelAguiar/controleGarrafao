@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.ValidationException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,21 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		this.clienteGarrafaoDAO = clienteGarrafaoDAO;
 	}
 
-	public List<ClienteDTO> findAllCliente() {
-
-		return this.clienteGarrafaoDAO.findAllCliente();
+	public ResponseEntity<List<ClienteDTO>> findAllCliente() {
+		try {
+			return new ResponseEntity<List<ClienteDTO>>(this.clienteGarrafaoDAO.findAllCliente(), HttpStatus.OK);
+		}catch (HibernateException e) {
+			return new ResponseEntity<List<ClienteDTO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	public List<GarrafaoDTO> findAllGarrafao() {
-
-		return clienteGarrafaoDAO.findAllGarrafao();
+	public ResponseEntity<List<GarrafaoDTO>> findAllGarrafao() {
+		try {
+			
+			return new ResponseEntity<List<GarrafaoDTO>>(clienteGarrafaoDAO.findAllGarrafao(), HttpStatus.OK);
+		}catch (HibernateException e) {
+			return new ResponseEntity<List<GarrafaoDTO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	public ResponseEntity<ClienteDTO> findClienteById(Long id) {
@@ -84,5 +92,22 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<GarrafaoDTO>(HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	public ResponseEntity<ClienteDTO> deleteCliente(long id) {
+		try {
+			boolean b;
+			if(id > 0) {
+				b = clienteGarrafaoDAO.removeCliente(id);
+				if(b)
+				return new ResponseEntity<ClienteDTO>(HttpStatus.OK);
+				else
+					return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}else
+				return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

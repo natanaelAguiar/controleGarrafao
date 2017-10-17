@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.validation.ValidationException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
@@ -28,17 +30,21 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 
 		List<ClienteDTO> clientes = new ArrayList<ClienteDTO>();
 		List<Cliente> cList = new ArrayList<Cliente>();
+		try {
+			cList = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
 
-		cList = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
+			for (Cliente cliente : cList) {
 
-		for (Cliente cliente : cList) {
-
-			ClienteDTO clienteDTO = new ClienteDTO();
-			clienteDTO = mapperCLiente(clienteDTO, cliente);
-			clientes.add(clienteDTO);
+				ClienteDTO clienteDTO = new ClienteDTO();
+				clienteDTO = mapperCLiente(clienteDTO, cliente);
+				clientes.add(clienteDTO);
+			}
+		} catch (HibernateException e) {
+			throw e;
+		} finally {
+			session.close();
 		}
 
-		session.close();
 		return clientes;
 	}
 
@@ -49,16 +55,21 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		List<GarrafaoDTO> garrafaos = new ArrayList<GarrafaoDTO>();
 		List<Garrafao> gList = new ArrayList<Garrafao>();
 
-		gList = (List<Garrafao>) session.createQuery("SELECT g FROM Garrafao g").list();
+		try {
+			gList = (List<Garrafao>) session.createQuery("SELECT g FROM Garrafao g").list();
 
-		for (Garrafao garrafao : gList) {
-			GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
+			for (Garrafao garrafao : gList) {
+				GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 
-			garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
+				garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
 
-			garrafaos.add(garrafaoDTO);
+				garrafaos.add(garrafaoDTO);
+			}
+		} catch (HibernateException e) {
+			throw e;
+		} finally {
+			session.close();
 		}
-		session.close();
 		return garrafaos;
 	}
 
@@ -66,12 +77,16 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		this.session = HibernateUtil.getSessionFactory().openSession();
 		ClienteDTO clienteDTO = new ClienteDTO();
 		Cliente cliente = new Cliente();
+		try {
+			cliente = (Cliente) this.session.load(Cliente.class, id.intValue());
 
-		cliente = (Cliente) this.session.load(Cliente.class, id.intValue());
+			clienteDTO = mapperCLiente(new ClienteDTO(), cliente);
 
-		clienteDTO = mapperCLiente(new ClienteDTO(), cliente);
-
-		this.session.close();
+		} catch (ObjectNotFoundException e) {
+			throw e;
+		} finally {
+			this.session.close();
+		}
 
 		return clienteDTO;
 	}
@@ -81,49 +96,89 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		Garrafao garrafao = new Garrafao();
 
-		garrafao = session.load(Garrafao.class, id.intValue());
+		try {
+			garrafao = session.load(Garrafao.class, id.intValue());
 
-		garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
+			garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
+		} catch (ObjectNotFoundException e) {
+			throw e;
+		} finally {
+			this.session.close();
+		}
 
-		this.session.close();
 		return garrafaoDTO;
-
 	}
 
 	public ClienteDTO saveOrUpdateCliente(Cliente cliente) throws ValidationException {
 		this.session = HibernateUtil.getSessionFactory().openSession();
-
 		ClienteDTO clienteDTO = new ClienteDTO();
-		if (cliente.getClienteId() > 0) {
-			this.session.persist(cliente);
-			this.session.flush();
-			this.session.getTransaction().commit();
-		} else {
-			clienteDTO = (ClienteDTO) this.session.merge(cliente);
+		try {
+			if (cliente.getClienteId() > 0 && cliente.getClienteGarrafaos().size() > 0) {
+				this.session.persist(cliente);
+				this.session.flush();
+				this.session.getTransaction().commit();
+			} else if(cliente.getClienteGarrafaos().size() > 0) {
+				clienteDTO = (ClienteDTO) this.session.merge(cliente);
+			}else
+				throw new ValidationException();
+
+			clienteDTO = mapperCLiente(clienteDTO, cliente);
+
+		} catch (ValidationException e) {
+			throw e;
+		} finally {
+			this.session.close();
 		}
-
-		clienteDTO = mapperCLiente(clienteDTO, cliente);
-
-		this.session.close();
 		return clienteDTO;
 	}
 
-	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao) {
+	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao) throws ValidationException {
 		this.session = HibernateUtil.getSessionFactory().openSession();
-
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
-		if (garrafao.getGarrafaoId() > 0) {
-			this.session.persist(garrafao);
-			this.session.flush();
-			this.session.getTransaction().commit();
-		} else {
-			garrafaoDTO = (GarrafaoDTO) this.session.merge(garrafao);
+		try {
+			if (garrafao.getGarrafaoId() > 0) {
+				this.session.persist(garrafao);
+				this.session.flush();
+				this.session.getTransaction().commit();
+			} else {
+				garrafaoDTO = (GarrafaoDTO) this.session.merge(garrafao);
+			}
+
+			garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
+		} catch (ValidationException e) {
+			throw e;
+		} finally {
+			this.session.close();
 		}
-
-		garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
-
-		this.session.close();
 		return garrafaoDTO;
+	}
+
+	public boolean removeCliente(Long id) throws ObjectNotFoundException {
+		Cliente cliente = new Cliente();
+		this.session = HibernateUtil.getSessionFactory().openSession();
+		this.session.beginTransaction();
+		try {
+			if (id > 0) {
+				String hql = "delete from ClienteGarrafao where CLIENTE_ID = :clienteId";
+				Query query = this.session.createQuery(hql);
+				query.setLong("clienteId", id);
+				int x = query.executeUpdate();
+				if(x != 0) {
+					cliente = this.session.load(Cliente.class, id);
+					this.session.delete(cliente);
+					this.session.getTransaction().commit();
+					return true;
+				}else {
+					return false;
+				}
+			} else
+				return false;
+		} catch (ObjectNotFoundException e) {
+			this.session.getTransaction().rollback();
+			throw e;
+		}finally {
+			this.session.close();
+		}
 	}
 
 }

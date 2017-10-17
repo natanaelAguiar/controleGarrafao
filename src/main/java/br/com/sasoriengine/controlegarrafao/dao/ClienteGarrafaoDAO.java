@@ -15,4 +15,5 @@ public interface ClienteGarrafaoDAO {
 	public GarrafaoDTO findGarrafaoById(Long id);
 	public ClienteDTO saveOrUpdateCliente(Cliente cliente);
 	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao);
+	public boolean removeCliente(Long id);
 }

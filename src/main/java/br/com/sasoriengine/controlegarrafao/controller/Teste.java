@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAO;
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
@@ -19,18 +21,19 @@ public class Teste {
 		System.out.println("Hibernate many to many - join table + extra column (Annotation)");
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
+		ClienteGarrafaoDAO clienteGarrafaoDAO = new ClienteGarrafaoDAOImp();
 		
 		Cliente cliente = new Cliente();
-//		cliente.setClienteNome("Natanael");
-//		cliente.setClienteRua("rua dos bobos");
-//		cliente.setClienteNumero(3);
+		cliente.setClienteNome("Natanael");
+		cliente.setClienteRua("rua dos bobos");
+		cliente.setClienteNumero(3);
 		
-		cliente = session.get(Cliente.class, 16);
+//		cliente = session.get(Cliente.class, 16);
 		
-		Garrafao garrafao = new Garrafao();
-		garrafao.setGarrafaoNome("Pet");
+//		Garrafao garrafao = new Garrafao();
+//		garrafao.setGarrafaoNome("Pet");
 //		garrafao = session.get(Garrafao.class, 16);
-		session.persist(garrafao);
+//		session.persist(garrafao);
 	    List<Cliente> clientes = new ArrayList<Cliente>();
 		clientes = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
 //		
@@ -42,10 +45,12 @@ public class Teste {
 		}
 		clienteGarrafao.setQuantidade(2);
 		clienteGarrafao.setCliente(cliente);
-		clienteGarrafao.setGarrafao(garrafao);
+//		clienteGarrafao.setGarrafao(garrafao);
 		
-		cliente.getClienteGarrafaos().add(clienteGarrafao);
-//		
+//		cliente.getClienteGarrafaos().add(clienteGarrafao);
+		System.out.println(cliente.getClienteId());
+		System.out.println(cliente.getClienteGarrafaos().size());
+		clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
 //		session.merge(cliente);
 //		session.getTransaction().commit();
 //		

@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GarrafaoDTO {
-	private Integer garrafaoId;
+	private long garrafaoId;
 	private String garrafaoNome;
 	private Set<ClienteGarrafaoDTO> clienteGarrafaosDTO = new HashSet<ClienteGarrafaoDTO>();
 	
-	public Integer getGarrafaoId() {
+	public long getGarrafaoId() {
 		return garrafaoId;
 	}
-	public void setGarrafaoId(Integer garrafaoId) {
+	public void setGarrafaoId(long garrafaoId) {
 		this.garrafaoId = garrafaoId;
 	}
 	public String getGarrafaoNome() {

@@ -4,17 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ClienteDTO {
-	private Integer clienteId;
+	private long clienteId;
 	private String clienteNome;
 	private String clienteRua;
 	private int clienteNumero;
 	private String clienteComplemento;
 	private Set<ClienteGarrafaoDTO> clienteGarrafaosDTO = new HashSet<ClienteGarrafaoDTO>();
 	
-	public Integer getClienteId() {
+	public long getClienteId() {
 		return clienteId;
 	}
-	public void setClienteId(Integer clienteId) {
+	public void setClienteId(long clienteId) {
 		this.clienteId = clienteId;
 	}
 	public String getClienteNome() {
