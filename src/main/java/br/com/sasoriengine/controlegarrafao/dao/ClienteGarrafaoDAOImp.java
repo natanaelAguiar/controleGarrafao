@@ -153,7 +153,7 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		return garrafaoDTO;
 	}
 
-	public boolean removeCliente(Long id) throws ObjectNotFoundException {
+	public boolean removeClienteById(long id) throws ObjectNotFoundException {
 		Cliente cliente = new Cliente();
 		this.session = HibernateUtil.getSessionFactory().openSession();
 		this.session.beginTransaction();
@@ -166,6 +166,35 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 				if(x != 0) {
 					cliente = this.session.load(Cliente.class, id);
 					this.session.delete(cliente);
+					this.session.getTransaction().commit();
+					return true;
+				}else {
+					return false;
+				}
+			} else
+				return false;
+		} catch (ObjectNotFoundException e) {
+			this.session.getTransaction().rollback();
+			throw e;
+		}finally {
+			this.session.close();
+		}
+	}
+
+	@Override
+	public boolean removeGarrafaoById(long id) {
+		Garrafao garrafao = new Garrafao();
+		this.session = HibernateUtil.getSessionFactory().openSession();
+		this.session.beginTransaction();
+		try {
+			if (id > 0) {
+				String hql = "delete from ClienteGarrafao where GARRAFAO_ID = :garrafaoId";
+				Query query = this.session.createQuery(hql);
+				query.setLong("garrafaoId", id);
+				int x = query.executeUpdate();
+				if(x != 0) {
+					garrafao = this.session.load(Garrafao.class, id);
+					this.session.delete(garrafao);
 					this.session.getTransaction().commit();
 					return true;
 				}else {

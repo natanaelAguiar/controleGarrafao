@@ -94,11 +94,11 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		return new ResponseEntity<GarrafaoDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
-	public ResponseEntity<ClienteDTO> deleteCliente(long id) {
+	public ResponseEntity<ClienteDTO> removeClienteById(long id) {
 		try {
 			boolean b;
 			if(id > 0) {
-				b = clienteGarrafaoDAO.removeCliente(id);
+				b = clienteGarrafaoDAO.removeClienteById(id);
 				if(b)
 				return new ResponseEntity<ClienteDTO>(HttpStatus.OK);
 				else
@@ -106,8 +106,24 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			}else
 				return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (Exception e) {
-			System.out.println(e.getMessage());
 			return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<GarrafaoDTO> removeGarrafaoById(long id) {
+		try {
+			boolean b;
+			if(id > 0) {
+				b = clienteGarrafaoDAO.removeGarrafaoById(id);
+				if(b)
+				return new ResponseEntity<GarrafaoDTO>(HttpStatus.OK);
+				else
+					return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}else
+				return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch (Exception e) {
+			return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

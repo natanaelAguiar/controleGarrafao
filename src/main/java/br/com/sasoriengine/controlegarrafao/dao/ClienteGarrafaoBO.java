@@ -16,5 +16,6 @@ public interface ClienteGarrafaoBO {
 	public ResponseEntity<GarrafaoDTO> findGarrafaoById(Long id);
 	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(Cliente cliente);
 	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(Garrafao garrafao);
-	public ResponseEntity<ClienteDTO> deleteCliente(long id);
+	public ResponseEntity<ClienteDTO> removeClienteById(long id);
+	public ResponseEntity<GarrafaoDTO> removeGarrafaoById(long id);
 }
