@@ -117,9 +117,9 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 				this.session.persist(cliente);
 				this.session.flush();
 				this.session.getTransaction().commit();
-			} else if(cliente.getClienteGarrafaos().size() > 0) {
+			} else if (cliente.getClienteGarrafaos().size() > 0) {
 				clienteDTO = (ClienteDTO) this.session.merge(cliente);
-			}else
+			} else
 				throw new ValidationException();
 
 			clienteDTO = mapperCLiente(clienteDTO, cliente);
@@ -159,24 +159,30 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		this.session.beginTransaction();
 		try {
 			if (id > 0) {
-				String hql = "delete from ClienteGarrafao where CLIENTE_ID = :clienteId";
-				Query query = this.session.createQuery(hql);
-				query.setLong("clienteId", id);
-				int x = query.executeUpdate();
-				if(x != 0) {
-					cliente = this.session.load(Cliente.class, id);
+				int rowlsAfected = 0;
+				cliente = this.session.load(Cliente.class, id);
+				if (cliente.getClienteGarrafaos().size() > 0) {
+					String hql = "delete from ClienteGarrafao where CLIENTE_ID = :clienteId";
+					Query query = this.session.createQuery(hql);
+					query.setLong("clienteId", id);
+					rowlsAfected = query.executeUpdate();
+					if (rowlsAfected > 0) {
+						this.session.delete(cliente);
+						this.session.getTransaction().commit();
+						return true;
+					} else 
+						return false;
+				} else {
 					this.session.delete(cliente);
 					this.session.getTransaction().commit();
 					return true;
-				}else {
-					return false;
 				}
 			} else
 				return false;
 		} catch (ObjectNotFoundException e) {
 			this.session.getTransaction().rollback();
 			throw e;
-		}finally {
+		} finally {
 			this.session.close();
 		}
 	}
@@ -188,24 +194,30 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		this.session.beginTransaction();
 		try {
 			if (id > 0) {
-				String hql = "delete from ClienteGarrafao where GARRAFAO_ID = :garrafaoId";
-				Query query = this.session.createQuery(hql);
-				query.setLong("garrafaoId", id);
-				int x = query.executeUpdate();
-				if(x != 0) {
-					garrafao = this.session.load(Garrafao.class, id);
+				int rowlsAfected = 0;
+				garrafao = this.session.load(Garrafao.class, id);
+				if (garrafao.getClienteGarrafaos().size() > 0) {
+					String hql = "delete from ClienteGarrafao where GARRAFAO_ID = :garrafaoId";
+					Query query = this.session.createQuery(hql);
+					query.setLong("garrafaoId", id);
+					rowlsAfected = query.executeUpdate();
+					if (rowlsAfected > 0) {
+						this.session.delete(garrafao);
+						this.session.getTransaction().commit();
+						return true;
+					} else
+						return false;
+				} else {
 					this.session.delete(garrafao);
 					this.session.getTransaction().commit();
 					return true;
-				}else {
-					return false;
 				}
 			} else
 				return false;
 		} catch (ObjectNotFoundException e) {
 			this.session.getTransaction().rollback();
 			throw e;
-		}finally {
+		} finally {
 			this.session.close();
 		}
 	}

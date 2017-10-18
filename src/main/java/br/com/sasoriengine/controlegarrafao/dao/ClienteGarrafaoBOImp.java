@@ -9,7 +9,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.com.sasoriengine.controlegarrafao.exeption.ClienteNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
@@ -104,9 +103,9 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 				else
 					return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}else
-				return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
 		}catch (Exception e) {
-			return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ClienteDTO>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -121,9 +120,9 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 				else
 					return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}else
-				return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}catch (Exception e) {
-			return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
+		}catch (ObjectNotFoundException e) {
+			return new ResponseEntity<GarrafaoDTO>(HttpStatus.NOT_FOUND);
 		}
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBOImp;
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
+import br.com.sasoriengine.controlegarrafao.exeption.ClienteNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
@@ -41,9 +42,9 @@ public class GarrafaoController {
 		return clienteGarrafaoBO.saveOrUpdateGarrafao(garrafao);
 	}
 	
-	@RequestMapping(value = "/garrafao/removeById/{id}", headers = "Accept=application/json", method = RequestMethod.PUT, produces = {
+	@RequestMapping(value = "/garrafao/removeById/{id}", headers = "Accept=application/json", method = RequestMethod.DELETE, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<GarrafaoDTO> removeById(@PathVariable long id) {
+	public ResponseEntity<GarrafaoDTO> removeById(@PathVariable long id) throws ClienteNotFoundException{
 		return clienteGarrafaoBO.removeGarrafaoById(id);
 	}
 }
