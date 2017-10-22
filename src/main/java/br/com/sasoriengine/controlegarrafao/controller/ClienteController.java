@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ public class ClienteController {
 	ClienteGarrafaoBO clienteGarrafaoBO = new ClienteGarrafaoBOImp(new ClienteGarrafaoDAOImp());
 	
 	@RequestMapping(value = "/cliente/findAll", headers="Accept=application/json", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<ClienteDTO>> findAllCliente(){
 		return clienteGarrafaoBO.findAllCliente();
 	}

@@ -9,7 +9,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.com.sasoriengine.controlegarrafao.exeption.ClienteNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
@@ -22,6 +21,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		this.clienteGarrafaoDAO = clienteGarrafaoDAO;
 	}
 
+	@Override
 	public ResponseEntity<List<ClienteDTO>> findAllCliente() {
 		try {
 			return new ResponseEntity<List<ClienteDTO>>(this.clienteGarrafaoDAO.findAllCliente(), HttpStatus.OK);
@@ -30,6 +30,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		}
 	}
 
+	@Override
 	public ResponseEntity<List<GarrafaoDTO>> findAllGarrafao() {
 		try {
 			
@@ -39,6 +40,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		}
 	}
 
+	@Override
 	public ResponseEntity<ClienteDTO> findClienteById(Long id) {
 		ClienteDTO clienteDTO = new ClienteDTO();
 		if (id > 0) {
@@ -52,6 +54,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
 	}
 
+	@Override
 	public ResponseEntity<GarrafaoDTO> findGarrafaoById(Long id) {
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		if (id > 0) {
@@ -65,6 +68,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
 	}
 
+	@Override
 	public ResponseEntity<ClienteDTO> saveOrUpdateCliente(Cliente cliente) {
 		ClienteDTO clienteDTO = new ClienteDTO();
 		try {
@@ -80,6 +84,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		return new ResponseEntity<ClienteDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
+	@Override
 	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(Garrafao garrafao) {
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		try {
@@ -94,6 +99,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		return new ResponseEntity<GarrafaoDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
+	@Override
 	public ResponseEntity<ClienteDTO> removeClienteById(long id) {
 		try {
 			boolean b;

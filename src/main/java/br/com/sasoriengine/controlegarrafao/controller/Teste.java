@@ -30,9 +30,9 @@ public class Teste {
 		
 //		cliente = session.get(Cliente.class, 16);
 		
-//		Garrafao garrafao = new Garrafao();
+		Garrafao garrafao = new Garrafao();
 //		garrafao.setGarrafaoNome("Pet");
-//		garrafao = session.get(Garrafao.class, 16);
+		garrafao = session.get(Garrafao.class, 16L);
 //		session.persist(garrafao);
 	    List<Cliente> clientes = new ArrayList<Cliente>();
 		clientes = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
@@ -45,9 +45,9 @@ public class Teste {
 		}
 		clienteGarrafao.setQuantidade(2);
 		clienteGarrafao.setCliente(cliente);
-//		clienteGarrafao.setGarrafao(garrafao);
+		clienteGarrafao.setGarrafao(garrafao);
 		
-//		cliente.getClienteGarrafaos().add(clienteGarrafao);
+		cliente.getClienteGarrafaos().add(clienteGarrafao);
 		System.out.println(cliente.getClienteId());
 		System.out.println(cliente.getClienteGarrafaos().size());
 		clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
