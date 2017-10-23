@@ -14,6 +14,7 @@ import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
 import br.com.sasoriengine.controlegarrafao.util.HibernateUtil;
 
 import static br.com.sasoriengine.controlegarrafao.util.MapperDTO.*;
@@ -126,9 +127,9 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 			if (cliente.getClienteId() <= 0 && cliente.getClienteGarrafaos().size() > 0) {
 				this.session.persist(cliente);
 				this.session.getTransaction().commit();
-			} else if(cliente.getClienteGarrafaos().size() > 0) {
+			} else if (cliente.getClienteGarrafaos().size() > 0) {
 				clienteDTO = (ClienteDTO) this.session.merge(cliente);
-			}else
+			} else
 				throw new ValidationException();
 
 			clienteDTO = mapperCLiente(clienteDTO, cliente);
@@ -175,12 +176,12 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 				Query query = this.session.createQuery(hql);
 				query.setLong("clienteId", id);
 				int x = query.executeUpdate();
-				if(x != 0) {
+				if (x != 0) {
 					cliente = this.session.load(Cliente.class, id);
 					this.session.delete(cliente);
 					this.session.getTransaction().commit();
 					return true;
-				}else {
+				} else {
 					return false;
 				}
 			} else
@@ -188,13 +189,13 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		} catch (ObjectNotFoundException e) {
 			this.session.getTransaction().rollback();
 			throw e;
-		}finally {
+		} finally {
 			this.session.close();
 		}
 	}
 
 	@Override
-	public boolean removeGarrafaoById(long id){
+	public boolean removeGarrafaoById(long id) {
 		Garrafao garrafao = new Garrafao();
 		this.session = HibernateUtil.getSessionFactory().openSession();
 		this.session.beginTransaction();
@@ -204,12 +205,12 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 				Query query = this.session.createQuery(hql);
 				query.setLong("garrafaoId", id);
 				int x = query.executeUpdate();
-				if(x != 0) {
+				if (x != 0) {
 					garrafao = this.session.load(Garrafao.class, id);
 					this.session.delete(garrafao);
 					this.session.getTransaction().commit();
 					return true;
-				}else {
+				} else {
 					return false;
 				}
 			} else
@@ -217,8 +218,29 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 		} catch (ObjectNotFoundException e) {
 			this.session.getTransaction().rollback();
 			throw e;
-		}finally {
+		} finally {
 			this.session.close();
+		}
+	}
+
+	@Override
+	public Usuario findUsuarioByUsername(String username) {
+		this.session = HibernateUtil.getSessionFactory().openSession();
+		this.session.beginTransaction();
+		
+		Usuario usuario = new Usuario();
+		try {
+			if(username != null) {
+				String hql = "from Usuario where USUARIO_NOME = :usuarioNome";
+				Query query = this.session.createQuery(hql);
+				query.setParameter("usuarioNome", username);
+				usuario = (Usuario) query.uniqueResult();
+				return usuario;
+			}else {
+				throw new ValidationException();
+			}
+		} catch (ObjectNotFoundException e) {
+			throw e;
 		}
 	}
 

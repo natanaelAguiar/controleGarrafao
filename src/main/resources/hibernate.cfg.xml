@@ -16,5 +16,6 @@
     	<mapping class="br.com.sasoriengine.controlegarrafao.model.Garrafao" />
     	<mapping class="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao" />
     	<mapping class="br.com.sasoriengine.controlegarrafao.model.ClienteGarrafaoId" />
+    	<mapping class="br.com.sasoriengine.controlegarrafao.model.Usuario" />
 	</session-factory>
 </hibernate-configuration>

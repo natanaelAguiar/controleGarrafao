@@ -13,6 +13,7 @@ import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
 import br.com.sasoriengine.controlegarrafao.util.HibernateUtil;
 
 public class Teste {
@@ -50,7 +51,7 @@ public class Teste {
 		cliente.getClienteGarrafaos().add(clienteGarrafao);
 		System.out.println(cliente.getClienteId());
 		System.out.println(cliente.getClienteGarrafaos().size());
-		clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
+//		clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
 //		session.merge(cliente);
 //		session.getTransaction().commit();
 //		

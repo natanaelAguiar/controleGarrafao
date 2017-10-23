@@ -1,5 +1,7 @@
 package br.com.sasoriengine.controlegarrafao.controller;
 
+import java.security.MessageDigest;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBOImp;
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
+import br.com.sasoriengine.controlegarrafao.security.Authority;
 import br.com.sasoriengine.controlegarrafao.security.JwtUtils;
 import br.com.sasoriengine.controlegarrafao.security.Login;
 import br.com.sasoriengine.controlegarrafao.security.User;
@@ -36,6 +43,7 @@ public class LoginController {
 		Authentication credentials = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
 		
 		User user = (User) auth.authenticate(credentials).getPrincipal();
+		
 		user.setPassword(null);
 		response.setHeader("Token", JwtUtils.generateToken(user));
 		return user;

@@ -7,6 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBOImp;
+import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
+
 @Service("segurancaService")
 public class SegurancaServiceImpl implements UserDetailsService{
 
@@ -15,19 +20,24 @@ public class SegurancaServiceImpl implements UserDetailsService{
 		if(username == null)
 			throw new UsernameNotFoundException(username);
 		
+		ClienteGarrafaoBO clienteGarrafaoBO = new ClienteGarrafaoBOImp(new ClienteGarrafaoDAOImp());
 		Authority authority = new Authority();
+		Usuario usuario = new Usuario();
+		usuario = clienteGarrafaoBO.findUsuarioByUsername(username);
+		System.out.println(usuario.getUsuarioNome());
 		
-		if (username.equals("admin")) {
-			authority.setAuthority("ROLE_ADMIN");
-		}else
-			authority.setAuthority("ROLE_USER");
+		if(usuario.getUsuarioId() != 0) {
+			
+			User user = new User();
+			user.setUsername(username);
+			user.setPassword(usuario.getUsuarioPassword());
+			user.setAuthorities(new ArrayList<Authority>());
+			authority.setAuthority(usuario.getRole());
+			user.getAuthorities().add(authority);
+			return user;
+		} else
+			throw new UsernameNotFoundException("User not found");
 		
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(username);
-		user.setAuthorities(new ArrayList<Authority>());
-		user.getAuthorities().add(authority);
-		return user;
 	}
 
 }

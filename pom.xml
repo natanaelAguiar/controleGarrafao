@@ -124,6 +124,14 @@
 			<version>${jjwt.version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/javax.security.jacc/javax.security.jacc-api -->
+		<dependency>
+			<groupId>javax.security.jacc</groupId>
+			<artifactId>javax.security.jacc-api</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<finalName>controleGarrafao</finalName>

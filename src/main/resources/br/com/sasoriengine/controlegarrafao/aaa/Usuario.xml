@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="br.com.sasoriengine.model.Usuario" table="usuario"
+		catalog="controleGarrafao">
+		<id name="usuarioID" type="java.lang.Integer">
+			<column name="USUARIO_ID" />
+			<generator class="identity" />
+		</id>
+		<property name="usuarioNome" type="string">
+			<column name="USUARIO_NOME" length="50" not-null="true"
+				unique="true" />
+		</property>
+		<property name="usuarioPassword" type="java.lang.Integer">
+			<column name="USUARIO_PASSWORD" not-null="true"
+				unique="false" />
+		</property>
+		<property name="usuarioRole" type="string">
+			<column name="USUARIO_ROLE" length="50" not-null="true"
+				unique="false" />
+		</property>
+	</class>
+</hibernate-mapping>

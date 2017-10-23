@@ -8,6 +8,7 @@ import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
 
 public interface ClienteGarrafaoBO {
 	public ResponseEntity<List<ClienteDTO>> findAllCliente();
@@ -18,4 +19,5 @@ public interface ClienteGarrafaoBO {
 	public ResponseEntity<GarrafaoDTO> saveOrUpdateGarrafao(Garrafao garrafao);
 	public ResponseEntity<ClienteDTO> removeClienteById(long id);
 	public ResponseEntity<GarrafaoDTO> removeGarrafaoById(long id);
+	public Usuario findUsuarioByUsername(String username);
 }

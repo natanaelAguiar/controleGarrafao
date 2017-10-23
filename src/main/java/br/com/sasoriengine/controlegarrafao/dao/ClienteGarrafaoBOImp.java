@@ -1,5 +1,6 @@
 package br.com.sasoriengine.controlegarrafao.dao;
 
+import java.rmi.ServerException;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -13,6 +14,7 @@ import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
 
 public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 	private ClienteGarrafaoDAO clienteGarrafaoDAO;
@@ -131,5 +133,18 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 		}catch (Exception e) {
 			return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public Usuario findUsuarioByUsername(String username) {
+		if(username != null)
+			try {
+				return clienteGarrafaoDAO.findUsuarioByUsername(username);
+				
+			} catch (ValidationException vE) {
+				throw vE;
+			}
+		else
+			throw new ValidationException();
 	}
 }
