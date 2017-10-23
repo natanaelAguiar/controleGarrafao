@@ -1,6 +1,7 @@
 package br.com.sasoriengine.controlegarrafao.controller;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import br.com.sasoriengine.controlegarrafao.model.ClienteGarrafao;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.Usuario;
 import br.com.sasoriengine.controlegarrafao.util.HibernateUtil;
+import br.com.sasoriengine.controlegarrafao.util.PasswordEncripter;
 
 public class Teste {
 
@@ -55,6 +57,13 @@ public class Teste {
 //		session.merge(cliente);
 //		session.getTransaction().commit();
 //		
+		try {
+			String string = PasswordEncripter.encrypt("admin");
+			if (string.equals("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"))
+				System.out.println(true);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
