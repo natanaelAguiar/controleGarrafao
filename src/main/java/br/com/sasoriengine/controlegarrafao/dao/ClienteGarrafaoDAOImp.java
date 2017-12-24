@@ -9,32 +9,39 @@ import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 import br.com.sasoriengine.controlegarrafao.model.Usuario;
-import br.com.sasoriengine.controlegarrafao.util.HibernateUtil;
 
 import static br.com.sasoriengine.controlegarrafao.util.MapperDTO.*;
 
+@Repository
 public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
-	private Session session;
+	private SessionFactory sessionFactory;
 
-	public ClienteGarrafaoDAOImp() {
+	public void setSessionFactory(SessionFactory sf) {
+		this.sessionFactory = sf;
+	}
+
+	public Session getCurrentSession() {
+		return this.sessionFactory.getCurrentSession();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<ClienteDTO> findAllCliente() {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 
 		List<ClienteDTO> clientes = new ArrayList<ClienteDTO>();
 		List<Cliente> cList = new ArrayList<Cliente>();
 		try {
-			cList = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
+			cList = (List<Cliente>) getCurrentSession().createQuery("SELECT c FROM Cliente c").list();
 
 			for (Cliente cliente : cList) {
 
@@ -44,8 +51,6 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 			}
 		} catch (HibernateException e) {
 			throw e;
-		} finally {
-			session.close();
 		}
 
 		return clientes;
@@ -53,15 +58,14 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<GarrafaoDTO> findAllGarrafao() {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 
 		List<GarrafaoDTO> garrafaos = new ArrayList<GarrafaoDTO>();
 		List<Garrafao> gList = new ArrayList<Garrafao>();
 
 		try {
-			gList = (List<Garrafao>) session.createQuery("SELECT g FROM Garrafao g").list();
+			gList = (List<Garrafao>) getCurrentSession().createQuery("SELECT g FROM Garrafao g").list();
 
 			for (Garrafao garrafao : gList) {
 				GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
@@ -70,65 +74,57 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 
 				garrafaos.add(garrafaoDTO);
 			}
+
 		} catch (HibernateException e) {
 			throw e;
-		} finally {
-			session.close();
 		}
 		return garrafaos;
 	}
 
 	@Override
+	@Transactional
 	public ClienteDTO findClienteById(Long id) throws ObjectNotFoundException {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		ClienteDTO clienteDTO = new ClienteDTO();
 		Cliente cliente = new Cliente();
 		try {
-			cliente = (Cliente) this.session.load(Cliente.class, id.intValue());
-
+			cliente = (Cliente) getCurrentSession().load(Cliente.class, id);
+			cliente.getClienteNome();
 			clienteDTO = mapperCLiente(new ClienteDTO(), cliente);
-
-		} catch (ObjectNotFoundException e) {
+			
+		}catch (ObjectNotFoundException e) {
 			throw e;
-		} finally {
-			this.session.close();
 		}
 
 		return clienteDTO;
 	}
 
 	@Override
+	@Transactional
 	public GarrafaoDTO findGarrafaoById(Long id) throws ObjectNotFoundException {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		Garrafao garrafao = new Garrafao();
 
 		try {
-			garrafao = session.load(Garrafao.class, id.intValue());
-
+			garrafao = getCurrentSession().load(Garrafao.class, id);
+			garrafao.getGarrafaoNome();
 			garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
 		} catch (ObjectNotFoundException e) {
 			throw e;
-		} finally {
-			this.session.close();
 		}
 
 		return garrafaoDTO;
 	}
 
 	@Override
+	@Transactional
 	public ClienteDTO saveOrUpdateCliente(Cliente cliente) throws ValidationException {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		ClienteDTO clienteDTO = new ClienteDTO();
 		try {
 			if (cliente.getClienteId() <= 0 && cliente.getClienteGarrafaos().size() > 0) {
-				this.session.persist(cliente);
-				this.session.getTransaction().commit();
+				getCurrentSession().persist(cliente);
+				getCurrentSession().getTransaction().commit();
 			} else if (cliente.getClienteGarrafaos().size() > 0) {
-				clienteDTO = (ClienteDTO) this.session.merge(cliente);
+				clienteDTO = (ClienteDTO) getCurrentSession().merge(cliente);
 			} else
 				throw new ValidationException();
 
@@ -136,50 +132,44 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 
 		} catch (ValidationException e) {
 			throw e;
-		} finally {
-			this.session.close();
 		}
 		return clienteDTO;
 	}
 
 	@Override
+	@Transactional
 	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao) throws ValidationException {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		GarrafaoDTO garrafaoDTO = new GarrafaoDTO();
 		try {
 			if (garrafao.getGarrafaoId() <= 0) {
-				this.session.persist(garrafao);
-				this.session.flush();
-				this.session.getTransaction().commit();
+				getCurrentSession().persist(garrafao);
+				getCurrentSession().flush();
+				getCurrentSession().getTransaction().commit();
 			} else {
-				garrafaoDTO = (GarrafaoDTO) this.session.merge(garrafao);
+				garrafaoDTO = (GarrafaoDTO) getCurrentSession().merge(garrafao);
 			}
 
 			garrafaoDTO = mapperGarrafao(garrafaoDTO, garrafao);
 		} catch (ValidationException e) {
 			throw e;
-		} finally {
-			this.session.close();
 		}
 		return garrafaoDTO;
 	}
 
 	@Override
+	@Transactional
 	public boolean removeClienteById(long id) throws ObjectNotFoundException {
 		Cliente cliente = new Cliente();
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		try {
 			if (id > 0) {
 				String hql = "delete from ClienteGarrafao where CLIENTE_ID = :clienteId";
-				Query query = this.session.createQuery(hql);
+				Query query = getCurrentSession().createQuery(hql);
 				query.setLong("clienteId", id);
 				int x = query.executeUpdate();
 				if (x != 0) {
-					cliente = this.session.load(Cliente.class, id);
-					this.session.delete(cliente);
-					this.session.getTransaction().commit();
+					cliente = getCurrentSession().load(Cliente.class, id);
+					getCurrentSession().delete(cliente);
+					getCurrentSession().getTransaction().commit();
 					return true;
 				} else {
 					return false;
@@ -187,28 +177,25 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 			} else
 				return false;
 		} catch (ObjectNotFoundException e) {
-			this.session.getTransaction().rollback();
+			getCurrentSession().getTransaction().rollback();
 			throw e;
-		} finally {
-			this.session.close();
 		}
 	}
 
 	@Override
+	@Transactional
 	public boolean removeGarrafaoById(long id) {
 		Garrafao garrafao = new Garrafao();
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
 		try {
 			if (id > 0) {
 				String hql = "delete from ClienteGarrafao where GARRAFAO_ID = :garrafaoId";
-				Query query = this.session.createQuery(hql);
+				Query query = getCurrentSession().createQuery(hql);
 				query.setLong("garrafaoId", id);
 				int x = query.executeUpdate();
 				if (x != 0) {
-					garrafao = this.session.load(Garrafao.class, id);
-					this.session.delete(garrafao);
-					this.session.getTransaction().commit();
+					garrafao = getCurrentSession().load(Garrafao.class, id);
+					getCurrentSession().delete(garrafao);
+					getCurrentSession().getTransaction().commit();
 					return true;
 				} else {
 					return false;
@@ -216,27 +203,24 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 			} else
 				return false;
 		} catch (ObjectNotFoundException e) {
-			this.session.getTransaction().rollback();
+			getCurrentSession().getTransaction().rollback();
 			throw e;
-		} finally {
-			this.session.close();
 		}
 	}
 
 	@Override
+	@Transactional
 	public Usuario findUsuarioByUsername(String username) {
-		this.session = HibernateUtil.getSessionFactory().openSession();
-		this.session.beginTransaction();
-		
+
 		Usuario usuario = new Usuario();
 		try {
-			if(username != null) {
+			if (username != null) {
 				String hql = "from Usuario where USUARIO_NOME = :usuarioNome";
-				Query query = this.session.createQuery(hql);
+				Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 				query.setParameter("usuarioNome", username);
 				usuario = (Usuario) query.uniqueResult();
 				return usuario;
-			}else {
+			} else {
 				throw new ValidationException();
 			}
 		} catch (ObjectNotFoundException e) {
