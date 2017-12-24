@@ -6,6 +6,7 @@ import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
+import br.com.sasoriengine.controlegarrafao.model.Usuario;
 
 public interface ClienteGarrafaoDAO {
 
@@ -17,4 +18,5 @@ public interface ClienteGarrafaoDAO {
 	public GarrafaoDTO saveOrUpdateGarrafao(Garrafao garrafao);
 	public boolean removeClienteById(long id);
 	public boolean removeGarrafaoById(long id);
+	public Usuario findUsuarioByUsername(String username);
 }

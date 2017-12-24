@@ -2,6 +2,8 @@ package br.com.sasoriengine.controlegarrafao.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBO;
-import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoBOImp;
-import br.com.sasoriengine.controlegarrafao.dao.ClienteGarrafaoDAOImp;
-import br.com.sasoriengine.controlegarrafao.exeption.ClienteNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 
@@ -22,7 +21,13 @@ import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 @RestController
 public class GarrafaoController {
 	
-	ClienteGarrafaoBO clienteGarrafaoBO = new ClienteGarrafaoBOImp(new ClienteGarrafaoDAOImp());
+	private ClienteGarrafaoBO clienteGarrafaoBO;
+	
+	@Autowired
+	@Qualifier("clienteGarrafaoBO")
+	public void setClienteGarrafaoBO(ClienteGarrafaoBO clienteGarrafaoBO) {
+		this.clienteGarrafaoBO = clienteGarrafaoBO;
+	}
 	
 	@RequestMapping(value = "/garrafao/findAll", headers = "Accept=application/json", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -44,7 +49,7 @@ public class GarrafaoController {
 	
 	@RequestMapping(value = "/garrafao/removeById/{id}", headers = "Accept=application/json", method = RequestMethod.DELETE, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<GarrafaoDTO> removeById(@PathVariable long id) throws ClienteNotFoundException{
+	public ResponseEntity<GarrafaoDTO> removeById(@PathVariable long id){
 		return clienteGarrafaoBO.removeGarrafaoById(id);
 	}
 }
