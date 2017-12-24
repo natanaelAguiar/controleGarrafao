@@ -27,25 +27,25 @@ public class Teste {
 		ClienteGarrafaoDAO clienteGarrafaoDAO = new ClienteGarrafaoDAOImp();
 		
 		Cliente cliente = new Cliente();
-		cliente.setClienteNome("Natanael");
-		cliente.setClienteRua("rua dos bobos");
-		cliente.setClienteNumero(3);
+//		cliente.setClienteNome("Natanael");
+//		cliente.setClienteRua("rua dos bobos");
+//		cliente.setClienteNumero(3);
 		
-//		cliente = session.get(Cliente.class, 16);
+		cliente = session.get(Cliente.class, 34L);
 		
 		Garrafao garrafao = new Garrafao();
 //		garrafao.setGarrafaoNome("Pet");
-		garrafao = session.get(Garrafao.class, 16L);
+		garrafao = session.get(Garrafao.class, 17L);
 //		session.persist(garrafao);
-	    List<Cliente> clientes = new ArrayList<Cliente>();
-		clientes = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
+//	    List<Cliente> clientes = new ArrayList<Cliente>();
+//		clientes = (List<Cliente>) session.createQuery("SELECT c FROM Cliente c").list();
 //		
 		ClienteGarrafao clienteGarrafao = new ClienteGarrafao();
-		for(Cliente cliente2 : clientes) {
-			for (ClienteGarrafao clienteGarrafao2 : cliente2.getClienteGarrafaos()) {
-				System.out.println(clienteGarrafao2.getGarrafao().getGarrafaoNome());
-			}
-		}
+//		for(Cliente cliente2 : clientes) {
+//			for (ClienteGarrafao clienteGarrafao2 : cliente2.getClienteGarrafaos()) {
+//				System.out.println(clienteGarrafao2.getGarrafao().getGarrafaoNome());
+//			}
+//		}
 		clienteGarrafao.setQuantidade(2);
 		clienteGarrafao.setCliente(cliente);
 		clienteGarrafao.setGarrafao(garrafao);
@@ -54,16 +54,17 @@ public class Teste {
 		System.out.println(cliente.getClienteId());
 		System.out.println(cliente.getClienteGarrafaos().size());
 //		clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
-//		session.merge(cliente);
-//		session.getTransaction().commit();
+		session.merge(cliente);
+		session.getTransaction().commit();
+		session.close();
 //		
-		try {
-			String string = PasswordEncripter.encrypt("admin");
-			if (string.equals("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"))
-				System.out.println(true);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			String string = PasswordEncripter.encrypt("admin");
+//			if (string.equals("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"))
+//				System.out.println(true);
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }

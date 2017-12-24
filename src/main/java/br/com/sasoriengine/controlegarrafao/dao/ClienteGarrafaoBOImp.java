@@ -113,10 +113,8 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 	@Override
 	public ResponseEntity<ClienteDTO> removeClienteById(long id) {
 		try {
-			boolean b;
 			if (id > 0) {
-				b = clienteGarrafaoDAO.removeClienteById(id);
-				if (b)
+				if (clienteGarrafaoDAO.removeClienteById(id))
 					return new ResponseEntity<ClienteDTO>(HttpStatus.OK);
 				else
 					return new ResponseEntity<ClienteDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -130,10 +128,8 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 	@Override
 	public ResponseEntity<GarrafaoDTO> removeGarrafaoById(long id) {
 		try {
-			boolean b;
 			if (id > 0) {
-				b = clienteGarrafaoDAO.removeGarrafaoById(id);
-				if (b)
+				if (clienteGarrafaoDAO.removeGarrafaoById(id))
 					return new ResponseEntity<GarrafaoDTO>(HttpStatus.OK);
 				else
 					return new ResponseEntity<GarrafaoDTO>(HttpStatus.INTERNAL_SERVER_ERROR);

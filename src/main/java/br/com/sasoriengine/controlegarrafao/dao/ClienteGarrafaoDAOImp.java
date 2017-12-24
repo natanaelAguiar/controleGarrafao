@@ -171,13 +171,11 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 					rowlsAfected = query.executeUpdate();
 					if (rowlsAfected > 0) {
 						getCurrentSession().delete(cliente);
-						getCurrentSession().getTransaction().commit();
 						return true;
 					} else 
 						return false;
 				} else {
 					getCurrentSession().delete(cliente);
-					getCurrentSession().getTransaction().commit();
 					return true;
 				}
 			} else
@@ -203,13 +201,11 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 					rowlsAfected = query.executeUpdate();
 					if (rowlsAfected > 0) {
 						getCurrentSession().delete(garrafao);
-						getCurrentSession().getTransaction().commit();
 						return true;
 					} else
 						return false;
 				} else {
 					getCurrentSession().delete(garrafao);
-					getCurrentSession().getTransaction().commit();
 					return true;
 				}
 			} else
