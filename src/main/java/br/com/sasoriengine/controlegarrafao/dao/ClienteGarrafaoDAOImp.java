@@ -1,5 +1,8 @@
 package br.com.sasoriengine.controlegarrafao.dao;
 
+import static br.com.sasoriengine.controlegarrafao.util.MapperDTO.mapperCLiente;
+import static br.com.sasoriengine.controlegarrafao.util.MapperDTO.mapperGarrafao;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +16,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.sasoriengine.controlegarrafao.exeption.EntityNotFoundException;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
 import br.com.sasoriengine.controlegarrafao.model.GarrafaoDTO;
 import br.com.sasoriengine.controlegarrafao.model.Usuario;
-
-import static br.com.sasoriengine.controlegarrafao.util.MapperDTO.*;
 
 @Repository
 public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
@@ -194,6 +196,7 @@ public class ClienteGarrafaoDAOImp implements ClienteGarrafaoDAO {
 			if (id > 0) {
 				int rowlsAfected = 0;
 				garrafao = getCurrentSession().load(Garrafao.class, id);
+				garrafao.getGarrafaoNome();
 				if (garrafao.getClienteGarrafaos().size() > 0) {
 					String hql = "delete from ClienteGarrafao where GARRAFAO_ID = :garrafaoId";
 					Query query = getCurrentSession().createQuery(hql);

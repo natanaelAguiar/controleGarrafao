@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -49,6 +52,7 @@ public class Cliente{
 		this.clienteNome = clienteNome;
 	}
 	@Column(name = "CLIENTE_RUA", nullable = false)
+	@NotBlank
 	public String getClienteRua() {
 		return clienteRua;
 	}
@@ -56,6 +60,7 @@ public class Cliente{
 		this.clienteRua = clienteRua;
 	}
 	@Column(name = "CLIENTE_NUMERO", nullable = false)
+	@Range(min = 1)
 	public int getClienteNumero() {
 		return clienteNumero;
 	}

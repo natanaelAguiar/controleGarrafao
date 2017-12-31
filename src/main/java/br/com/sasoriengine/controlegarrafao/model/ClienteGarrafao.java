@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 public class ClienteGarrafao implements java.io.Serializable{
 
 	private ClienteGarrafaoId pk = new ClienteGarrafaoId();
-	int quantidade;
+	int quantidade = 1;
 	
 	@EmbeddedId
 	public ClienteGarrafaoId getPk() {
