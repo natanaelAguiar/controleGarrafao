@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Service;
+
+import br.com.sasoriengine.controlegarrafao.exeption.EntityNotFoundException;
+import br.com.sasoriengine.controlegarrafao.exeption.InvalidRequestException;
 import br.com.sasoriengine.controlegarrafao.model.Cliente;
 import br.com.sasoriengine.controlegarrafao.model.ClienteDTO;
 import br.com.sasoriengine.controlegarrafao.model.Garrafao;
@@ -56,11 +59,11 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			try {
 				clienteDTO = clienteGarrafaoDAO.findClienteById(id);
 			} catch (ObjectNotFoundException e) {
-				return new ResponseEntity<ClienteDTO>(HttpStatus.NOT_FOUND);
+				throw new EntityNotFoundException("Cliente Not Found", null, "Cliente nao encontrado");
 			}
 			return new ResponseEntity<ClienteDTO>(clienteDTO, HttpStatus.OK);
 		} else
-			return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<ClienteDTO>(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Override
@@ -70,7 +73,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			try {
 				garrafaoDTO = clienteGarrafaoDAO.findGarrafaoById(id);
 			} catch (ObjectNotFoundException e) {
-				return new ResponseEntity<GarrafaoDTO>(HttpStatus.NOT_FOUND);
+				throw new EntityNotFoundException("Cliente Not Found", null, "Cliente nao encontrado");
 			}
 			return new ResponseEntity<GarrafaoDTO>(garrafaoDTO, HttpStatus.OK);
 		} else
@@ -86,12 +89,13 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 				clienteDTO = clienteGarrafaoDAO.saveOrUpdateCliente(cliente);
 				return new ResponseEntity<ClienteDTO>(clienteDTO, HttpStatus.OK);
 			} else
-				new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+				throw new InvalidRequestException("Invalid Entity", null,
+						"Verifique se os campos estao preenchidos corretamente");
 
 		} catch (ValidationException e) {
-			return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+			throw new InvalidRequestException("Invalid Entity", null,
+					"Verifique se os campos estao preenchidos corretamente");
 		}
-		return new ResponseEntity<ClienteDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
 	@Override
@@ -102,12 +106,13 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 				garrafaoDTO = clienteGarrafaoDAO.saveOrUpdateGarrafao(garrafao);
 				return new ResponseEntity<GarrafaoDTO>(garrafaoDTO, HttpStatus.OK);
 			} else
-				new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
+				throw new InvalidRequestException("Invalid Entity", null,
+						"Verifique se os campos estao preenchidos corretamente");
 
 		} catch (ValidationException e) {
-			return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
+			throw new InvalidRequestException("Invalid Entity", null,
+					"Verifique se os campos estao preenchidos corretamente");
 		}
-		return new ResponseEntity<GarrafaoDTO>(HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
 	@Override
@@ -121,7 +126,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			} else
 				return new ResponseEntity<ClienteDTO>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<ClienteDTO>(HttpStatus.NOT_FOUND);
+			throw new EntityNotFoundException("Check if Cliente exists in database", null, "Cliente nao Encontrado");
 		}
 	}
 
@@ -136,7 +141,7 @@ public class ClienteGarrafaoBOImp implements ClienteGarrafaoBO {
 			} else
 				return new ResponseEntity<GarrafaoDTO>(HttpStatus.BAD_REQUEST);
 		} catch (ObjectNotFoundException e) {
-			return new ResponseEntity<GarrafaoDTO>(HttpStatus.NOT_FOUND);
+			throw new EntityNotFoundException("Check if Garrafao exists in database", null, "Garrafao nao Encontrado");
 
 		}
 	}
